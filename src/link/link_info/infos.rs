@@ -59,6 +59,10 @@ const ERSPAN: &str = "erspan";
 const IP6ERSPAN: &str = "ip6erspan";
 const PFCP: &str = "pfcp";
 const RMNET: &str = "rmnet";
+#[cfg(target_os = "freebsd")]
+const LOOPBACK: &str = "lo";
+#[cfg(target_os = "freebsd")]
+const WLAN: &str = "wlan";
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 #[non_exhaustive]
@@ -235,6 +239,10 @@ pub enum InfoKind {
     Ip6ErSpan,
     Pfcp,
     RmNet,
+    #[cfg(target_os = "freebsd")]
+    Loopback,
+    #[cfg(target_os = "freebsd")]
+    Wlan,
     Other(String),
 }
 
@@ -290,6 +298,10 @@ impl std::fmt::Display for InfoKind {
                 Self::Ip6ErSpan => IP6ERSPAN,
                 Self::Pfcp => PFCP,
                 Self::RmNet => RMNET,
+                #[cfg(target_os = "freebsd")]
+                Self::Loopback => LOOPBACK,
+                #[cfg(target_os = "freebsd")]
+                Self::Wlan => WLAN,
                 Self::Other(s) => s.as_str(),
             }
         )
@@ -345,6 +357,10 @@ impl Nla for InfoKind {
             Self::Ip6ErSpan => IP6ERSPAN.len(),
             Self::Pfcp => PFCP.len(),
             Self::RmNet => RMNET.len(),
+            #[cfg(target_os = "freebsd")]
+            Self::Loopback => LOOPBACK.len(),
+            #[cfg(target_os = "freebsd")]
+            Self::Wlan => WLAN.len(),
             Self::Other(s) => s.len(),
         };
         len + 1
@@ -411,6 +427,10 @@ impl From<&str> for InfoKind {
             IP6ERSPAN => Self::Ip6ErSpan,
             PFCP => Self::Pfcp,
             RMNET => Self::RmNet,
+            #[cfg(target_os = "freebsd")]
+            LOOPBACK => Self::Loopback,
+            #[cfg(target_os = "freebsd")]
+            WLAN => Self::Wlan,
             _ => Self::Other(s.to_owned()),
         }
     }
