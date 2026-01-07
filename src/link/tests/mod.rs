@@ -8,6 +8,9 @@ mod bond;
 mod bridge;
 mod can;
 mod dpll_pin;
+#[cfg(test)]
+mod freebsd;
+#[cfg(test)]
 mod geneve;
 mod gre;
 mod gtp;
