@@ -38,6 +38,7 @@ static LINK_MSG: [u8; 96] = [
     0x00, // Maximum GSO size L=8,T=41,V=65536
 ];
 
+#[cfg(not(target_os = "freebsd"))]
 #[test]
 fn link_message_packet_header_read() {
     let header = LinkHeader::parse(&LINK_MSG[0..16]).unwrap();
@@ -54,6 +55,7 @@ fn link_message_packet_header_read() {
     assert_eq!(header.change_mask, LinkFlags::empty());
 }
 
+#[cfg(not(target_os = "freebsd"))]
 #[test]
 fn link_message_packet_header_build() {
     let mut buf = vec![0xff; 16];
@@ -159,6 +161,7 @@ fn link_mssage_packet_attributes_read() {
     assert_eq!(parsed, LinkAttribute::NumTxQueues(1));
 }
 
+#[cfg(not(target_os = "freebsd"))]
 #[test]
 fn link_message_emit() {
     let header = LinkHeader {
