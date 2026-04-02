@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: MIT
 
+#[cfg(not(target_os = "freebsd"))]
+use netlink_packet_core::NlasIterator;
 use netlink_packet_core::{
     parse_u8, DecodeError, DefaultNla, ErrorContext, Nla, NlaBuffer,
-    NlasIterator, Parseable,
+    Parseable,
 };
 
 const IFLA_BRPORT_NEIGH_FORWARD_GRAT: u16 = 45;
@@ -14,8 +16,10 @@ pub enum LinkProtoInfoBridge {
     Other(DefaultNla),
 }
 
+#[cfg(not(target_os = "freebsd"))]
 pub(crate) struct VecLinkProtoInfoBridge(pub(crate) Vec<LinkProtoInfoBridge>);
 
+#[cfg(not(target_os = "freebsd"))]
 impl<'a, T: AsRef<[u8]> + ?Sized> Parseable<NlaBuffer<&'a T>>
     for VecLinkProtoInfoBridge
 {
