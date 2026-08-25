@@ -92,7 +92,7 @@ fn test_freebsd_spec_attr() {
 
     assert_eq!(
         expected,
-        LinkMessage::parse(&LinkMessageBuffer::new(&raw)).unwrap()
+        LinkMessage::parse(&raw).unwrap()
     );
 
     let mut buf = vec![0; expected.buffer_len()];

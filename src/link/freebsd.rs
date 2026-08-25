@@ -241,7 +241,7 @@ impl<'buffer, T: AsRef<[u8]> + ?Sized> Parseable<FreeBSDBuffer<&'buffer T>>
                             );
 
                             nested_buf =
-                                FreeBSDBuffer::new(&nested_buf.inner()[8..]);
+                                FreeBSDBuffer::new(&nested_buf.into_inner()[8..]);
                         }
                         v if v == NLA_BITSET_VALUE || v == NLA_BITSET_MASK => {
                             // in `sys/netlink/route/iface.c`, `dump_iface_caps`
@@ -283,7 +283,7 @@ impl<'buffer, T: AsRef<[u8]> + ?Sized> Parseable<FreeBSDBuffer<&'buffer T>>
                             *caps = Some((if_cap_flags, if_cap2_flags));
 
                             nested_buf =
-                                FreeBSDBuffer::new(&nested_buf.inner()[12..]);
+                                FreeBSDBuffer::new(&nested_buf.into_inner()[12..]);
                         }
                         _ => {
                             return Err(DecodeError::from(

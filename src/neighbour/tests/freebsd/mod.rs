@@ -35,7 +35,7 @@ fn test_freebsd_neighbour() {
             NeighbourAttribute::Destination(
                 IpAddr::V4(Ipv4Addr::new(192, 168, 8, 204)).into(),
             ),
-            NeighbourAttribute::LinkLocalAddress(vec![
+            NeighbourAttribute::LinkLayerAddress(vec![
                 88, 156, 252, 16, 137, 144,
             ]),
             NeighbourAttribute::Probes(0),
@@ -53,7 +53,7 @@ fn test_freebsd_neighbour() {
 
     assert_eq!(
         expected,
-        NeighbourMessage::parse(&NeighbourMessageBuffer::new(&raw)).unwrap()
+        NeighbourMessage::parse(&raw).unwrap()
     );
 
     let mut buf = vec![0; expected.buffer_len()];

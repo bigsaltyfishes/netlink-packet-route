@@ -67,7 +67,7 @@ fn test_freebsd_rt_net() {
 
     assert_eq!(
         expected,
-        RouteMessage::parse(&RouteMessageBuffer::new(&raw)).unwrap()
+        RouteMessage::parse(&raw).unwrap()
     );
 
     let mut buf = vec![0; expected.buffer_len()];
@@ -114,7 +114,7 @@ fn test_freebsd_rt_host() {
 
     assert_eq!(
         expected,
-        RouteMessage::parse(&RouteMessageBuffer::new(&raw)).unwrap()
+        RouteMessage::parse(&raw).unwrap()
     );
 
     let mut buf = vec![0; expected.buffer_len()];

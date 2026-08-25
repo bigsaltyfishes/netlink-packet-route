@@ -73,7 +73,6 @@ pub use self::{
     link_info::{
         InfoData, InfoKind, InfoVlan, LinkInfo, VlanFlags, VlanQosMapping,
     },
-    },
     link_layer_type::LinkLayerType,
     link_mode::LinkMode,
     link_state::State,

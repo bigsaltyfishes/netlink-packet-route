@@ -23,8 +23,6 @@ use super::proto_info::VecLinkProtoInfoBridge;
 use super::{
     af_spec::VecAfSpecUnspec,
     buffer_tool::expand_buffer_if_small,
-    devlink_port::DevlinkPort,
-    dpll_pin::DpllPin,
     ext_mask::VecLinkExtentMask,
     link_info::VecLinkInfo,
     proto_info::VecLinkProtoInfoInet6,
@@ -36,6 +34,8 @@ use super::{
     Stats, Stats64, Stats64Buffer, StatsBuffer, WirelessEvent,
 };
 use crate::AddressFamily;
+#[cfg(not(target_os = "freebsd"))]
+use super::{devlink_port::DevlinkPort, dpll_pin::DpllPin};
 #[cfg(target_os = "freebsd")]
 use crate::{
     buffer_freebsd::FreeBSDBuffer, link::freebsd::FreeBsdLinkAttribute,
@@ -105,11 +105,17 @@ const IFLA_GRO_MAX_SIZE: u16 = 58;
 const IFLA_TSO_MAX_SIZE: u16 = 59;
 const IFLA_TSO_MAX_SEGS: u16 = 60;
 const IFLA_ALLMULTI: u16 = 61;
+#[cfg(not(target_os = "freebsd"))]
 const IFLA_DEVLINK_PORT: u16 = 62;
+#[cfg(not(target_os = "freebsd"))]
 const IFLA_GSO_IPV4_MAX_SIZE: u16 = 63;
+// NOTE: on FreeBSD, attribute kind 64 is IFLA_FREEBSD.
+#[cfg(not(target_os = "freebsd"))]
 const IFLA_GRO_IPV4_MAX_SIZE: u16 = 64;
+#[cfg(not(target_os = "freebsd"))]
 const IFLA_DPLL_PIN: u16 = 65;
 // const IFLA_MAX_PACING_OFFLOAD_HORIZON: u16 = 66;
+#[cfg(not(target_os = "freebsd"))]
 const IFLA_NETNS_IMMUTABLE: u16 = 67;
 // const IFLA_HEADROOM: u16 = 68;
 // const IFLA_TAILROOM: u16 = 69;
@@ -185,10 +191,15 @@ pub enum LinkAttribute {
     TsoMaxSize(u32),
     TsoMaxSegs(u32),
     AllMulticast(u32),
+    #[cfg(not(target_os = "freebsd"))]
     GsoIpv4MaxSize(u32),
+    #[cfg(not(target_os = "freebsd"))]
     GroIpv4MaxSize(u32),
+    #[cfg(not(target_os = "freebsd"))]
     NetnsImmutable(bool),
+    #[cfg(not(target_os = "freebsd"))]
     DevlinkPort(Vec<DevlinkPort>),
+    #[cfg(not(target_os = "freebsd"))]
     DpllPin(Vec<DpllPin>),
     #[cfg(target_os = "freebsd")]
     FreeBSD(Vec<FreeBsdLinkAttribute>),
@@ -223,6 +234,7 @@ impl Nla for LinkAttribute {
             Self::Mode(_) => 1,
             Self::Carrier(_) | Self::ProtoDown(_) => 1,
 
+            #[cfg(not(target_os = "freebsd"))]
             Self::NetnsImmutable(_) => 1,
 
             Self::Mtu(_)
@@ -251,9 +263,10 @@ impl Nla for LinkAttribute {
             | Self::GroMaxSize(_)
             | Self::TsoMaxSize(_)
             | Self::TsoMaxSegs(_)
-            | Self::AllMulticast(_)
-            | Self::GsoIpv4MaxSize(_)
-            | Self::GroIpv4MaxSize(_) => 4,
+            | Self::AllMulticast(_) => 4,
+
+            #[cfg(not(target_os = "freebsd"))]
+            Self::GsoIpv4MaxSize(_) | Self::GroIpv4MaxSize(_) => 4,
 
             Self::OperState(_) => 1,
             Self::Stats(_) => size_of::<StatsBuffer>(),
@@ -264,7 +277,9 @@ impl Nla for LinkAttribute {
             Self::PropList(nlas) => nlas.as_slice().buffer_len(),
             Self::AfSpecUnspec(nlas) => nlas.as_slice().buffer_len(),
             Self::AfSpecBridge(nlas) => nlas.as_slice().buffer_len(),
+            #[cfg(not(target_os = "freebsd"))]
             Self::DevlinkPort(nlas) => nlas.as_slice().buffer_len(),
+            #[cfg(not(target_os = "freebsd"))]
             Self::DpllPin(nlas) => nlas.as_slice().buffer_len(),
             Self::ProtoInfoUnknown(attr) => attr.value_len(),
             Self::Wireless(v) => v.buffer_len(),
@@ -305,6 +320,7 @@ impl Nla for LinkAttribute {
 
             Self::Carrier(val) | Self::ProtoDown(val) => buffer[0] = *val,
 
+            #[cfg(not(target_os = "freebsd"))]
             Self::NetnsImmutable(val) => buffer[0] = u8::from(*val),
 
             Self::Mtu(value)
@@ -327,8 +343,10 @@ impl Nla for LinkAttribute {
             | Self::GroMaxSize(value)
             | Self::TsoMaxSize(value)
             | Self::TsoMaxSegs(value)
-            | Self::AllMulticast(value)
-            | Self::GsoIpv4MaxSize(value)
+            | Self::AllMulticast(value) => emit_u32(buffer, *value).unwrap(),
+
+            #[cfg(not(target_os = "freebsd"))]
+            Self::GsoIpv4MaxSize(value)
             | Self::GroIpv4MaxSize(value) => emit_u32(buffer, *value).unwrap(),
 
             Self::ExtMask(value) => {
@@ -350,7 +368,9 @@ impl Nla for LinkAttribute {
             Self::PropList(nlas) => nlas.as_slice().emit(buffer),
             Self::AfSpecUnspec(nlas) => nlas.as_slice().emit(buffer),
             Self::AfSpecBridge(nlas) => nlas.as_slice().emit(buffer),
+            #[cfg(not(target_os = "freebsd"))]
             Self::DevlinkPort(nlas) => nlas.as_slice().emit(buffer),
+            #[cfg(not(target_os = "freebsd"))]
             Self::DpllPin(nlas) => nlas.as_slice().emit(buffer),
             Self::Wireless(v) => v.emit(buffer),
             Self::ProtoInfoUnknown(attr) | Self::Other(attr) => {
@@ -424,10 +444,15 @@ impl Nla for LinkAttribute {
             Self::TsoMaxSize(_) => IFLA_TSO_MAX_SIZE,
             Self::TsoMaxSegs(_) => IFLA_TSO_MAX_SEGS,
             Self::AllMulticast(_) => IFLA_ALLMULTI,
+            #[cfg(not(target_os = "freebsd"))]
             Self::GsoIpv4MaxSize(_) => IFLA_GSO_IPV4_MAX_SIZE,
+            #[cfg(not(target_os = "freebsd"))]
             Self::GroIpv4MaxSize(_) => IFLA_GRO_IPV4_MAX_SIZE,
+            #[cfg(not(target_os = "freebsd"))]
             Self::NetnsImmutable(_) => IFLA_NETNS_IMMUTABLE,
+            #[cfg(not(target_os = "freebsd"))]
             Self::DevlinkPort(_) => IFLA_DEVLINK_PORT | NLA_F_NESTED,
+            #[cfg(not(target_os = "freebsd"))]
             Self::DpllPin(_) => IFLA_DPLL_PIN | NLA_F_NESTED,
             #[cfg(target_os = "freebsd")]
             Self::FreeBSD(_) => IFLA_FREEBSD,
@@ -769,19 +794,23 @@ impl<'a, T: AsRef<[u8]> + ?Sized>
             IFLA_ALLMULTI => Self::AllMulticast(
                 parse_u32(payload).context("invalid IFLA_ALLMULTI value")?,
             ),
+            #[cfg(not(target_os = "freebsd"))]
             IFLA_GSO_IPV4_MAX_SIZE => Self::GsoIpv4MaxSize(
                 parse_u32(payload)
                     .context("invalid IFLA_GSO_IPV4_MAX_SIZE value")?,
             ),
+            #[cfg(not(target_os = "freebsd"))]
             IFLA_GRO_IPV4_MAX_SIZE => Self::GroIpv4MaxSize(
                 parse_u32(payload)
                     .context("invalid IFLA_GRO_IPV4_MAX_SIZE value")?,
             ),
+            #[cfg(not(target_os = "freebsd"))]
             IFLA_NETNS_IMMUTABLE => Self::NetnsImmutable(
                 parse_u8(payload)
                     .context("invalid IFLA_NETNS_IMMUTABLE value")?
                     != 0,
             ),
+            #[cfg(not(target_os = "freebsd"))]
             IFLA_DEVLINK_PORT => {
                 let err = "invalid IFLA_DEVLINK_PORT value";
                 let mut nlas = vec![];
@@ -792,6 +821,7 @@ impl<'a, T: AsRef<[u8]> + ?Sized>
                 }
                 Self::DevlinkPort(nlas)
             }
+            #[cfg(not(target_os = "freebsd"))]
             IFLA_DPLL_PIN => {
                 let err = "invalid IFLA_DPLL_PIN value";
                 let mut nlas = vec![];
@@ -801,6 +831,7 @@ impl<'a, T: AsRef<[u8]> + ?Sized>
                     nlas.push(parsed);
                 }
                 Self::DpllPin(nlas)
+            }
             #[cfg(target_os = "freebsd")]
             IFLA_FREEBSD => {
                 let err = "invalid IFLA_FREEBSD value";

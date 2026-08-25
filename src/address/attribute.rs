@@ -4,11 +4,10 @@ use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
 
 #[cfg(not(target_os = "freebsd"))]
 use netlink_packet_core::parse_u8;
-#[cfg(target_os = "freebsd")]
-use netlink_packet_core::NlasIterator;
 use netlink_packet_core::{
     emit_i32, emit_u32, parse_i32, parse_string, parse_u32, DecodeError,
-    DefaultNla, Emitable, ErrorContext, Nla, NlaBuffer, Parseable,
+    DefaultNla, Emitable, ErrorContext, Nla, NlaBuffer, NlasIterator,
+    Parseable,
 };
 
 use crate::address::{AddressFlags, CacheInfo};
@@ -16,7 +15,6 @@ use crate::address::{AddressFlags, CacheInfo};
 use crate::{
     address::freebsd::FreeBsdAddressAttribute, buffer_freebsd::FreeBSDBuffer,
 };
->>>>>>> 867670e (address: Add support for `IFA_FREEBSD`)
 
 const IFA_ADDRESS: u16 = 1;
 const IFA_LOCAL: u16 = 2;

@@ -5,6 +5,8 @@ use netlink_packet_core::{
     Parseable, ParseableParametrized,
 };
 
+const IFLA_INFO_DATA: u16 = 2;
+
 use super::super::{
     InfoAmt, InfoBareUdp, InfoBatAdv, InfoBond, InfoBridge, InfoCan, InfoDsa,
     InfoGeneve, InfoGre, InfoGre6, InfoGtp, InfoHsr, InfoIpTunnel, InfoIpVlan,

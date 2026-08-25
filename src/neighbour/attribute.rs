@@ -14,7 +14,6 @@ use crate::{
     buffer_freebsd::FreeBSDBuffer,
     neighbour::freebsd::FreeBsdNeighbourAttribute,
 };
->>>>>>> ab2d7f9 (neighbour: Add support for `NDA_FREEBSD`)
 use crate::{route::RouteProtocol, AddressFamily};
 
 const NDA_DST: u16 = 1;

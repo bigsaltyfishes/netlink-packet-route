@@ -44,7 +44,7 @@ fn test_freebsd_address_vhid() {
 
     assert_eq!(
         expected,
-        AddressMessage::parse(&AddressMessageBuffer::new(&raw)).unwrap()
+        AddressMessage::parse(&raw).unwrap()
     );
 
     let mut buf = vec![0; expected.buffer_len()];
@@ -77,7 +77,7 @@ fn test_freebsd_address_unspecific() {
 
     assert_eq!(
         expected,
-        AddressMessage::parse(&AddressMessageBuffer::new(&raw)).unwrap()
+        AddressMessage::parse(&raw).unwrap()
     );
 
     let mut buf = vec![0; expected.buffer_len()];
