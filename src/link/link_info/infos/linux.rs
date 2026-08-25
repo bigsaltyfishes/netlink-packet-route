@@ -7,10 +7,15 @@ use netlink_packet_core::{
 
 use super::super::{InfoData, InfoPortData, InfoPortKind, LinkXstats};
 
+#[allow(dead_code)]
 const IFLA_INFO_KIND: u16 = 1;
+#[allow(dead_code)]
 const IFLA_INFO_DATA: u16 = 2;
+#[allow(dead_code)]
 const IFLA_INFO_XSTATS: u16 = 3;
+#[allow(dead_code)]
 const IFLA_INFO_PORT_KIND: u16 = 4;
+#[allow(dead_code)]
 const IFLA_INFO_PORT_DATA: u16 = 5;
 
 const DUMMY: &str = "dummy";
@@ -66,6 +71,10 @@ const WLAN: &str = "wlan";
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 #[non_exhaustive]
+// The OS-shared LinkInfo/VecLinkInfo live in infos/mod.rs; the Linux
+// submodule only provides InfoKind. These duplicates are kept for parity
+// with upstream's layout but are unused on both platforms.
+#[allow(dead_code)]
 pub enum LinkInfo {
     Xstats(LinkXstats),
     Kind(InfoKind),
@@ -110,6 +119,7 @@ impl Nla for LinkInfo {
     }
 }
 
+#[allow(dead_code)]
 pub(crate) struct VecLinkInfo(pub(crate) Vec<LinkInfo>);
 
 // We cannot `impl Parseable<_> for Info` because some attributes

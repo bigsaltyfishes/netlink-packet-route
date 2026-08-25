@@ -29,12 +29,20 @@ const IFLA_INFO_PORT_KIND: u16 = 4;
 #[cfg(not(target_os = "freebsd"))]
 const IFLA_INFO_PORT_DATA: u16 = 5;
 
+// Shared driver-name constants. On Linux some are shadowed by the
+// Linux-specific submodule's own copies, hence the allow.
+#[allow(dead_code)]
 const BRIDGE: &str = "bridge";
+#[allow(dead_code)]
 const TUN: &str = "tun";
+#[allow(dead_code)]
 const VLAN: &str = "vlan";
+#[allow(dead_code)]
 const VXLAN: &str = "vxlan";
+#[allow(dead_code)]
 const GRE: &str = "gre";
 #[cfg(not(target_os = "freebsd"))]
+#[allow(dead_code)]
 const WIREGUARD: &str = "wireguard";
 #[cfg(target_os = "freebsd")]
 const WIREGUARD: &str = "wg";
