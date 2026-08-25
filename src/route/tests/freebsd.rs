@@ -2,12 +2,15 @@
 
 use std::net::Ipv4Addr;
 
-use netlink_packet_core::{Emitable, Parseable};
+use netlink_packet_core::{
+    Emitable, Nla, NlaBuffer, Parseable, ParseableParametrized,
+};
 
 use crate::{
     route::{
-        RouteAddress, RouteAttribute, RouteFlags, RouteHeader, RouteMessage,
-        RouteMessageBuffer, RouteProtocol, RouteScope, RouteType, RtFlags,
+        attribute::VecRouteAttribute, RouteAddress, RouteAttribute,
+        RouteFlags, RouteHeader, RouteLwEnCapType, RouteMessage,
+        RouteProtocol, RouteScope, RouteType, RtFlags,
     },
     AddressFamily,
 };
@@ -122,4 +125,34 @@ fn test_freebsd_rt_host() {
     expected.emit(&mut buf);
 
     assert_eq!(buf, raw);
+}
+
+#[test]
+fn test_freebsd_route_attribute_roundtrip() {
+    // Attribute-level round-trip of the FreeBSD-specific route attributes:
+    // RTA_KNH_ID (10), RTA_WEIGHT (13) and RTA_RTFLAGS (14).
+    let attributes = vec![
+        RouteAttribute::KernelNextHopId(42),
+        RouteAttribute::PathWeight(7),
+        RouteAttribute::RtFlags(
+            RtFlags::Host | RtFlags::Gateway | RtFlags::Up,
+        ),
+    ];
+
+    for attr in attributes {
+        // `buffer_len()` already includes the 4-byte NLA header.
+        let total = attr.buffer_len();
+        let mut buf = vec![0; total];
+        buf[..2].copy_from_slice(&(total as u16).to_ne_bytes());
+        buf[2..4].copy_from_slice(&attr.kind().to_ne_bytes());
+        attr.emit_value(&mut buf[4..]);
+
+        let nla = NlaBuffer::new_checked(&buf).unwrap();
+        let parsed = RouteAttribute::parse_with_param(
+            &nla,
+            (AddressFamily::Inet, RouteType::Unspec, RouteLwEnCapType::None),
+        )
+        .unwrap();
+        assert_eq!(parsed, attr);
+    }
 }
