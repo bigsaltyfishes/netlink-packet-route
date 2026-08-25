@@ -41,6 +41,8 @@ fn test_addr_flag_stable_privacy() {
 }
 
 #[test]
+// Fixture bytes use the Linux address-family / attribute numbering.
+#[cfg(target_os = "linux")]
 fn test_get_loopback_ipv6_addr() {
     let raw = vec![
         0x0a, 0x80, 0x80, 0xfe, 0x01, 0x00, 0x00, 0x00, 0x14, 0x00, 0x01, 0x00,

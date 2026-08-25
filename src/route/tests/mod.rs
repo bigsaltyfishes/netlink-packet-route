@@ -12,7 +12,7 @@ mod ip6_tunnel;
 mod loopback;
 #[cfg(test)]
 mod metrics;
-#[cfg(test)]
+#[cfg(all(test, not(target_os = "freebsd")))]
 mod mpls;
 #[cfg(test)]
 mod multipath;

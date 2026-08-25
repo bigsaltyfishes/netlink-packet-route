@@ -96,6 +96,8 @@ fn test_ipv4_route_loopback_broadcast() {
     assert_eq!(buf, raw);
 }
 
+// Fixture bytes use the Linux address-family numbering.
+#[cfg(target_os = "linux")]
 #[test]
 // wireshark capture(netlink message header removed) of nlmon against command:
 //   ip -6 route show dev lo table local
