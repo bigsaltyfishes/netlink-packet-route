@@ -6,11 +6,11 @@
 
 use netlink_packet_core::{Emitable, NlaBuffer, Parseable};
 
+use crate::link::{LinkFlags, LinkLayerType, Stats64};
 use crate::{
     buffer_freebsd::FreeBSDBuffer,
     link::{freebsd::FreeBsdLinkAttribute, link_info::InfoKind},
 };
-use crate::link::{LinkFlags, LinkLayerType, Stats64};
 
 const IFLA_INFO_KIND: u16 = 1;
 
@@ -20,7 +20,10 @@ fn test_freebsd_info_kind_driver_names() {
     // "lo" for loopback; WireGuard is named "wg" there.
     let wlan = nla_of_str("wlan");
     let lo = nla_of_str("lo");
-    assert_eq!(InfoKind::parse(&NlaBuffer::new(&wlan)).unwrap(), InfoKind::Wlan);
+    assert_eq!(
+        InfoKind::parse(&NlaBuffer::new(&wlan)).unwrap(),
+        InfoKind::Wlan
+    );
     assert_eq!(
         InfoKind::parse(&NlaBuffer::new(&lo)).unwrap(),
         InfoKind::Loopback

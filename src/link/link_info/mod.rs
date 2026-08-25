@@ -29,9 +29,9 @@ mod gtp;
 #[cfg(not(target_os = "freebsd"))]
 mod hsr;
 mod info_data;
-mod infos;
 #[cfg(not(target_os = "freebsd"))]
 mod info_port;
+mod infos;
 #[cfg(not(target_os = "freebsd"))]
 mod ipoib;
 #[cfg(not(target_os = "freebsd"))]

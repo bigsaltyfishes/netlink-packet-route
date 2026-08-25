@@ -3,8 +3,7 @@
 #[cfg(not(target_os = "freebsd"))]
 use netlink_packet_core::NlasIterator;
 use netlink_packet_core::{
-    parse_u8, DecodeError, DefaultNla, ErrorContext, Nla, NlaBuffer,
-    Parseable,
+    parse_u8, DecodeError, DefaultNla, ErrorContext, Nla, NlaBuffer, Parseable,
 };
 
 const IFLA_BRPORT_NEIGH_FORWARD_GRAT: u16 = 45;

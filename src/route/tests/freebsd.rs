@@ -8,9 +8,9 @@ use netlink_packet_core::{
 
 use crate::{
     route::{
-        attribute::VecRouteAttribute, RouteAddress, RouteAttribute,
-        RouteFlags, RouteHeader, RouteLwEnCapType, RouteMessage,
-        RouteProtocol, RouteScope, RouteType, RtFlags,
+        attribute::VecRouteAttribute, RouteAddress, RouteAttribute, RouteFlags,
+        RouteHeader, RouteLwEnCapType, RouteMessage, RouteProtocol, RouteScope,
+        RouteType, RtFlags,
     },
     AddressFamily,
 };
@@ -68,10 +68,7 @@ fn test_freebsd_rt_net() {
         ],
     };
 
-    assert_eq!(
-        expected,
-        RouteMessage::parse(&raw).unwrap()
-    );
+    assert_eq!(expected, RouteMessage::parse(&raw).unwrap());
 
     let mut buf = vec![0; expected.buffer_len()];
 
@@ -115,10 +112,7 @@ fn test_freebsd_rt_host() {
         ],
     };
 
-    assert_eq!(
-        expected,
-        RouteMessage::parse(&raw).unwrap()
-    );
+    assert_eq!(expected, RouteMessage::parse(&raw).unwrap());
 
     let mut buf = vec![0; expected.buffer_len()];
 
@@ -134,9 +128,7 @@ fn test_freebsd_route_attribute_roundtrip() {
     let attributes = vec![
         RouteAttribute::KernelNextHopId(42),
         RouteAttribute::PathWeight(7),
-        RouteAttribute::RtFlags(
-            RtFlags::Host | RtFlags::Gateway | RtFlags::Up,
-        ),
+        RouteAttribute::RtFlags(RtFlags::Host | RtFlags::Gateway | RtFlags::Up),
     ];
 
     for attr in attributes {
@@ -150,7 +142,11 @@ fn test_freebsd_route_attribute_roundtrip() {
         let nla = NlaBuffer::new_checked(&buf).unwrap();
         let parsed = RouteAttribute::parse_with_param(
             &nla,
-            (AddressFamily::Inet, RouteType::Unspec, RouteLwEnCapType::None),
+            (
+                AddressFamily::Inet,
+                RouteType::Unspec,
+                RouteLwEnCapType::None,
+            ),
         )
         .unwrap();
         assert_eq!(parsed, attr);

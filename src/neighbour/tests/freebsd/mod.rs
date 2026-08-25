@@ -51,10 +51,7 @@ fn test_freebsd_neighbour() {
         ],
     };
 
-    assert_eq!(
-        expected,
-        NeighbourMessage::parse(&raw).unwrap()
-    );
+    assert_eq!(expected, NeighbourMessage::parse(&raw).unwrap());
 
     let mut buf = vec![0; expected.buffer_len()];
     expected.emit(&mut buf);

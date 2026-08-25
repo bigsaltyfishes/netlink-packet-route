@@ -33,8 +33,8 @@ use super::{
     LinkProtocolDownReason, LinkVfInfo, LinkVfPort, LinkXdp, Map, Prop, State,
     Stats, Stats64, Stats64Buffer, StatsBuffer, WirelessEvent,
 };
-use crate::AddressFamily;
 use super::{devlink_port::DevlinkPort, dpll_pin::DpllPin};
+use crate::AddressFamily;
 #[cfg(target_os = "freebsd")]
 use crate::{
     buffer_freebsd::FreeBSDBuffer, link::freebsd::FreeBsdLinkAttribute,
