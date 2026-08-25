@@ -80,6 +80,7 @@ fn main() {
     }
 }
 
+#[cfg(target_os = "freebsd")]
 fn main() {
     use std::io::{Read, Write};
 
