@@ -8,9 +8,9 @@ use netlink_packet_core::{
 
 use crate::{
     route::{
-        attribute::VecRouteAttribute, RouteAddress, RouteAttribute, RouteFlags,
-        RouteHeader, RouteLwEnCapType, RouteMessage, RouteProtocol, RouteScope,
-        RouteType, RtFlags,
+        RouteAddress, RouteAttribute, RouteFlags, RouteHeader,
+        RouteLwEnCapType, RouteMessage, RouteProtocol, RouteScope, RouteType,
+        RtFlags,
     },
     AddressFamily,
 };

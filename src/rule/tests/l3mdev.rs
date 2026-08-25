@@ -6,7 +6,6 @@ use crate::{
     route::RouteProtocol,
     rule::{
         flags::RuleFlags, RuleAction, RuleAttribute, RuleHeader, RuleMessage,
-        RuleUidRange,
     },
     AddressFamily,
 };

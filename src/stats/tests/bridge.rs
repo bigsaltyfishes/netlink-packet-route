@@ -4,9 +4,8 @@ use netlink_packet_core::{Emitable, Parseable};
 
 use crate::{
     stats::{
-        AfSpecStats, BridgeMcastStats, BridgeStpXstats, BridgeVlanXstats,
-        BridgeXstat, HwStatsInfo, LinkXstatGroup, OffloadXstat, StatsAttribute,
-        StatsFilterMask, StatsHeader, StatsMessage,
+        BridgeMcastStats, BridgeVlanXstats, BridgeXstat, LinkXstatGroup,
+        StatsAttribute, StatsFilterMask, StatsHeader, StatsMessage,
     },
     AddressFamily,
 };

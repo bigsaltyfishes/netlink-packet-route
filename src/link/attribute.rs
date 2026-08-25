@@ -14,6 +14,9 @@ use netlink_packet_core::{
     target_os = "android"
 ))]
 use super::af_spec::VecAfSpecBridge;
+use super::devlink_port::DevlinkPort;
+#[cfg(not(target_os = "freebsd"))]
+use super::dpll_pin::DpllPin;
 #[cfg(any(
     target_os = "linux",
     target_os = "fuchsia",
@@ -33,7 +36,6 @@ use super::{
     LinkProtocolDownReason, LinkVfInfo, LinkVfPort, LinkXdp, Map, Prop, State,
     Stats, Stats64, Stats64Buffer, StatsBuffer, WirelessEvent,
 };
-use super::{devlink_port::DevlinkPort, dpll_pin::DpllPin};
 use crate::AddressFamily;
 #[cfg(target_os = "freebsd")]
 use crate::{
@@ -107,6 +109,7 @@ const IFLA_ALLMULTI: u16 = 61;
 const IFLA_DEVLINK_PORT: u16 = 62;
 const IFLA_GSO_IPV4_MAX_SIZE: u16 = 63;
 const IFLA_GRO_IPV4_MAX_SIZE: u16 = 64;
+#[cfg(not(target_os = "freebsd"))]
 const IFLA_DPLL_PIN: u16 = 65;
 // const IFLA_MAX_PACING_OFFLOAD_HORIZON: u16 = 66;
 const IFLA_NETNS_IMMUTABLE: u16 = 67;

@@ -1,12 +1,9 @@
 // SPDX-License-Identifier: MIT
 
-use netlink_packet_core::{Emitable, NlasIterator, ParseableParametrized};
+use netlink_packet_core::{NlasIterator, ParseableParametrized};
 
 use crate::{
-    link::{
-        link_flag::LinkFlags, LinkAttribute, LinkHeader, LinkLayerType,
-        LinkMessage, LinkMode, State,
-    },
+    link::{LinkAttribute, LinkMode, State},
     AddressFamily,
 };
 

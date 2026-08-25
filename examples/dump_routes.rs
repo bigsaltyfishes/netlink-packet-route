@@ -106,7 +106,7 @@ fn main() {
 
     // we set the NLM_F_DUMP flag so we expect a multipart rx_packet in
     // response.
-    while let Ok(size) = socket.read(&mut &mut receive_buffer[..]) {
+    while let Ok(size) = socket.read(&mut receive_buffer[..]) {
         loop {
             let bytes = &receive_buffer[offset..];
             let rx_packet =

@@ -111,7 +111,7 @@ fn main() {
     'outer: loop {
         use std::io::Read;
 
-        let size = socket.read(&mut &mut receive_buffer[..]).unwrap();
+        let size = socket.read(&mut receive_buffer[..]).unwrap();
 
         loop {
             let bytes = &receive_buffer[offset..];

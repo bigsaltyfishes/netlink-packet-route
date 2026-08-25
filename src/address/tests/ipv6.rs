@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+#[cfg(target_os = "linux")]
 use std::{
     net::{IpAddr, Ipv6Addr},
     str::FromStr,
@@ -7,10 +8,12 @@ use std::{
 
 use netlink_packet_core::{Emitable, NlaBuffer, Parseable};
 
+use crate::address::{AddressAttribute, AddressFlags};
+#[cfg(target_os = "linux")]
 use crate::{
     address::{
-        AddressAttribute, AddressFlags, AddressHeader, AddressHeaderFlags,
-        AddressMessage, AddressProtocol, AddressScope, CacheInfo,
+        AddressHeader, AddressHeaderFlags, AddressMessage, AddressProtocol,
+        AddressScope, CacheInfo,
     },
     AddressFamily,
 };

@@ -6,8 +6,7 @@ use netlink_packet_core::{
 
 use crate::{
     stats::{
-        AfSpecStats, HwStatsInfo, OffloadXstat, StatsAttribute,
-        StatsFilterMask, StatsHeader, StatsMessage,
+        AfSpecStats, StatsAttribute, StatsFilterMask, StatsHeader, StatsMessage,
     },
     AddressFamily, RouteNetlinkMessage,
 };

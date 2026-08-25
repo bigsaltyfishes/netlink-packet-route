@@ -7,8 +7,7 @@ use netlink_packet_core::{Emitable, Parseable};
 use crate::{
     address::{
         freebsd::FreeBsdAddressAttribute, AddressAttribute, AddressFlags,
-        AddressHeader, AddressHeaderFlags, AddressMessage,
-        AddressMessageBuffer, AddressScope,
+        AddressHeader, AddressHeaderFlags, AddressMessage, AddressScope,
     },
     AddressFamily,
 };
