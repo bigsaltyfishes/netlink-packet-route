@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-use std::net::Ipv4Addr;
+use std::net::{Ipv4Addr, Ipv6Addr};
 
 use netlink_packet_core::{Emitable, Parseable};
 
 use crate::{
     route::{
-        flags::RouteFlags, RouteAttribute, RouteHeader, RouteMessage,
-        RouteProtocol, RouteScope, RouteType,
+        flags::RouteFlags, RouteAttribute, RouteCacheInfo, RouteHeader,
+        RouteMessage, RoutePreference, RouteProtocol, RouteScope, RouteType,
     },
     AddressFamily,
 };
