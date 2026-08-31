@@ -103,11 +103,30 @@ const IFLA_PROTO_DOWN_REASON: u16 = 55;
 const IFLA_PARENT_DEV_NAME: u16 = 56;
 const IFLA_PARENT_DEV_BUS_NAME: u16 = 57;
 const IFLA_GRO_MAX_SIZE: u16 = 58;
+// FreeBSD skips IFLA_TSO_MAX_SIZE (it does not exist there), so the Linux
+// numbering is shifted by -1 from IFLA_TSO_MAX_SEGS onward. Crucially, on
+// FreeBSD type 64 is IFLA_FREEBSD (nested), not IFLA_GRO_IPV4_MAX_SIZE.
+#[cfg(not(target_os = "freebsd"))]
 const IFLA_TSO_MAX_SIZE: u16 = 59;
+#[cfg(target_os = "freebsd")]
+const IFLA_TSO_MAX_SEGS: u16 = 59;
+#[cfg(not(target_os = "freebsd"))]
 const IFLA_TSO_MAX_SEGS: u16 = 60;
+#[cfg(target_os = "freebsd")]
+const IFLA_ALLMULTI: u16 = 60;
+#[cfg(not(target_os = "freebsd"))]
 const IFLA_ALLMULTI: u16 = 61;
+#[cfg(target_os = "freebsd")]
+const IFLA_DEVLINK_PORT: u16 = 61;
+#[cfg(not(target_os = "freebsd"))]
 const IFLA_DEVLINK_PORT: u16 = 62;
+#[cfg(target_os = "freebsd")]
+const IFLA_GSO_IPV4_MAX_SIZE: u16 = 62;
+#[cfg(not(target_os = "freebsd"))]
 const IFLA_GSO_IPV4_MAX_SIZE: u16 = 63;
+#[cfg(target_os = "freebsd")]
+const IFLA_GRO_IPV4_MAX_SIZE: u16 = 63;
+#[cfg(not(target_os = "freebsd"))]
 const IFLA_GRO_IPV4_MAX_SIZE: u16 = 64;
 #[cfg(not(target_os = "freebsd"))]
 const IFLA_DPLL_PIN: u16 = 65;
@@ -115,10 +134,10 @@ const IFLA_DPLL_PIN: u16 = 65;
 const IFLA_NETNS_IMMUTABLE: u16 = 67;
 // const IFLA_HEADROOM: u16 = 68;
 // const IFLA_TAILROOM: u16 = 69;
-// Per sys/netlink/route/interface.h (FreeBSD), IFLA_FREEBSD follows the
-// Linux numbering (GRO_IPV4_MAX_SIZE = 64) and is assigned kind 65.
+// FreeBSD: sys/netlink/route/interface.h — no IFLA_TSO_MAX_SIZE, so the
+// FreeBSD-specific IFLA_FREEBSD nested attribute is kind 64 (not 65).
 #[cfg(target_os = "freebsd")]
-const IFLA_FREEBSD: u16 = 65;
+const IFLA_FREEBSD: u16 = 64;
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 #[non_exhaustive]
@@ -186,6 +205,7 @@ pub enum LinkAttribute {
     ParentDevName(String),
     ParentDevBusName(String),
     GroMaxSize(u32),
+    #[cfg(not(target_os = "freebsd"))]
     TsoMaxSize(u32),
     TsoMaxSegs(u32),
     AllMulticast(u32),
@@ -256,7 +276,6 @@ impl Nla for LinkAttribute {
             | Self::NewIfIndex(_)
             | Self::MaxMtu(_)
             | Self::GroMaxSize(_)
-            | Self::TsoMaxSize(_)
             | Self::TsoMaxSegs(_)
             | Self::AllMulticast(_)
             | Self::GsoIpv4MaxSize(_)
@@ -333,7 +352,6 @@ impl Nla for LinkAttribute {
             | Self::MinMtu(value)
             | Self::MaxMtu(value)
             | Self::GroMaxSize(value)
-            | Self::TsoMaxSize(value)
             | Self::TsoMaxSegs(value)
             | Self::AllMulticast(value)
             | Self::GsoIpv4MaxSize(value)
@@ -430,6 +448,7 @@ impl Nla for LinkAttribute {
             Self::ParentDevName(_) => IFLA_PARENT_DEV_NAME,
             Self::ParentDevBusName(_) => IFLA_PARENT_DEV_BUS_NAME,
             Self::GroMaxSize(_) => IFLA_GRO_MAX_SIZE,
+            #[cfg(not(target_os = "freebsd"))]
             Self::TsoMaxSize(_) => IFLA_TSO_MAX_SIZE,
             Self::TsoMaxSegs(_) => IFLA_TSO_MAX_SEGS,
             Self::AllMulticast(_) => IFLA_ALLMULTI,
@@ -768,6 +787,7 @@ impl<'a, T: AsRef<[u8]> + ?Sized>
                 parse_u32(payload)
                     .context("invalid IFLA_GRO_MAX_SIZE value")?,
             ),
+            #[cfg(not(target_os = "freebsd"))]
             IFLA_TSO_MAX_SIZE => Self::TsoMaxSize(
                 parse_u32(payload)
                     .context("invalid IFLA_TSO_MAX_SIZE value")?,
