@@ -2,11 +2,12 @@
 
 use netlink_packet_core::{Emitable, Parseable};
 
+#[cfg(target_os = "linux")]
+use crate::stats::{AfSpecStats, BridgeStpXstats, HwStatsInfo, OffloadXstat};
 use crate::{
     stats::{
-        AfSpecStats, BridgeMcastStats, BridgeStpXstats, BridgeVlanXstats,
-        BridgeXstat, HwStatsInfo, LinkXstatGroup, OffloadXstat, StatsAttribute,
-        StatsFilterMask, StatsHeader, StatsMessage,
+        BridgeMcastStats, BridgeVlanXstats, BridgeXstat, LinkXstatGroup,
+        StatsAttribute, StatsFilterMask, StatsHeader, StatsMessage,
     },
     AddressFamily,
 };

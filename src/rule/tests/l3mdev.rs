@@ -2,11 +2,12 @@
 
 use netlink_packet_core::{Emitable, Parseable};
 
+#[cfg(target_os = "linux")]
+use crate::rule::RuleUidRange;
 use crate::{
     route::RouteProtocol,
     rule::{
         flags::RuleFlags, RuleAction, RuleAttribute, RuleHeader, RuleMessage,
-        RuleUidRange,
     },
     AddressFamily,
 };

@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-#[cfg(not(target_os = "freebsd"))]
+#[cfg(target_os = "linux")]
 use netlink_packet_core::{
     NetlinkHeader, NetlinkMessage, NetlinkPayload, NLM_F_DUMP, NLM_F_REQUEST,
 };
-#[cfg(not(target_os = "freebsd"))]
+#[cfg(target_os = "linux")]
 use netlink_packet_route::{rule::RuleMessage, RouteNetlinkMessage};
 
-#[cfg(not(target_os = "freebsd"))]
+#[cfg(target_os = "linux")]
 fn main() {
     use netlink_sys::{protocols::NETLINK_ROUTE, Socket, SocketAddr};
 
@@ -68,7 +68,7 @@ fn main() {
     }
 }
 
-#[cfg(target_os = "freebsd")]
+#[cfg(not(target_os = "linux"))]
 fn main() {
-    println!("This example cannot be run on FreeBSD");
+    println!("This example requires Linux");
 }

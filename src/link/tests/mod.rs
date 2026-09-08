@@ -2,90 +2,89 @@
 //
 // Test modules are gated by content, not blanket-disabled per OS:
 //  - tests exercising Linux-only types/messages are gated to Linux;
-//  - OS-neutral tests (message, sriov, xdp) run everywhere;
-//  - FreeBSD-specific tests live in `freebsd.rs`.
+//  - OS-neutral tests (including message, dpll_pin, inet, sriov and xdp) run
+//    everywhere;
+//  - mixed modules gate individual tests/imports, and FreeBSD-specific tests
+//    live in `freebsd.rs`.
 
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod afspec;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod amt;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod bareudp;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod batadv;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod bond;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod bridge;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod can;
-#[cfg(all(test, not(target_os = "freebsd")))]
 mod dpll_pin;
 #[cfg(all(test, target_os = "freebsd"))]
 mod freebsd;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod geneve;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod gre;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod gtp;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod hsr;
-#[cfg(all(test, not(target_os = "freebsd")))]
 mod inet;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod ipoib;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod iptunnel;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod ipvlan;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod ipvtap;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod loopback;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod macsec;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod macvlan;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod macvtap;
 #[cfg(test)]
 mod message;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod netdevsim;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod netkit;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod pfcp;
-#[cfg(all(test, not(target_os = "freebsd")))]
 mod prop_list;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod rmnet;
 #[cfg(test)]
 mod sriov;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod statistics;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod vcan;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod veth;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod vlan;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod vrf;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod vti;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod vxcan;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod vxlan;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod wireguard;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod wireless;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod wwan;
 #[cfg(test)]
 mod xdp;
-#[cfg(all(test, not(target_os = "freebsd")))]
+#[cfg(target_os = "linux")]
 mod xfrm;

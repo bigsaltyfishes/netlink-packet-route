@@ -3,12 +3,14 @@
 #[cfg(target_os = "freebsd")]
 mod freebsd;
 
+#[cfg(any(target_os = "linux", target_os = "freebsd"))]
 use netlink_packet_core::{
     NetlinkHeader, NetlinkMessage, NetlinkPayload, NLM_F_DUMP, NLM_F_REQUEST,
 };
+#[cfg(any(target_os = "linux", target_os = "freebsd"))]
 use netlink_packet_route::{link::LinkMessage, RouteNetlinkMessage};
 
-#[cfg(not(target_os = "freebsd"))]
+#[cfg(target_os = "linux")]
 fn main() {
     use netlink_sys::{protocols::NETLINK_ROUTE, Socket, SocketAddr};
 
@@ -147,4 +149,9 @@ fn main() {
             }
         }
     }
+}
+
+#[cfg(not(any(target_os = "linux", target_os = "freebsd")))]
+fn main() {
+    println!("This example requires Linux or FreeBSD");
 }

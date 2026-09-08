@@ -25,7 +25,6 @@ name = "dump_packet_links"
 pretty_assertions = "1.4.1"
 
 # `netlink-sys` opens real Linux netlink sockets and does not build on
-# FreeBSD (its libc lacks PF_NETLINK / sockaddr_nl), so it is only a
-# dev-dependency on non-FreeBSD targets.
-[target.'cfg(not(target_os = "freebsd"))'.dev-dependencies]
+# platforms whose libc does not expose Linux netlink types.
+[target.'cfg(target_os = "linux")'.dev-dependencies]
 netlink-sys = { version = "0.9.0" }

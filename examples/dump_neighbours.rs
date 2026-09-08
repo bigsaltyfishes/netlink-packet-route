@@ -3,15 +3,17 @@
 #[cfg(target_os = "freebsd")]
 mod freebsd;
 
+#[cfg(any(target_os = "linux", target_os = "freebsd"))]
 use netlink_packet_core::{
     NetlinkHeader, NetlinkMessage, NetlinkPayload, NLM_F_DUMP, NLM_F_REQUEST,
 };
+#[cfg(any(target_os = "linux", target_os = "freebsd"))]
 use netlink_packet_route::{
     neighbour::{NeighbourAddress, NeighbourAttribute, NeighbourMessage},
     AddressFamily, RouteNetlinkMessage,
 };
 
-#[cfg(not(target_os = "freebsd"))]
+#[cfg(target_os = "linux")]
 fn main() {
     use netlink_sys::{protocols::NETLINK_ROUTE, Socket, SocketAddr};
 
@@ -147,6 +149,12 @@ fn main() {
     }
 }
 
+#[cfg(not(any(target_os = "linux", target_os = "freebsd")))]
+fn main() {
+    println!("This example requires Linux or FreeBSD");
+}
+
+#[cfg(any(target_os = "linux", target_os = "freebsd"))]
 fn format_ip(addr: &NeighbourAddress) -> String {
     if let NeighbourAddress::Inet(ip) = addr {
         ip.to_string()
@@ -157,6 +165,7 @@ fn format_ip(addr: &NeighbourAddress) -> String {
     }
 }
 
+#[cfg(any(target_os = "linux", target_os = "freebsd"))]
 fn format_mac(buf: &[u8]) -> String {
     if buf.len() == 6 {
         format!(
@@ -168,6 +177,7 @@ fn format_mac(buf: &[u8]) -> String {
     }
 }
 
+#[cfg(any(target_os = "linux", target_os = "freebsd"))]
 fn print_entry(entry: NeighbourMessage) {
     let state = entry.header.state;
     if let (Some(dest), Some(lladdr)) = (

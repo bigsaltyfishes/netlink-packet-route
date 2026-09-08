@@ -78,7 +78,7 @@ fn test_iptunnel_ipip_link_info() {
     assert_eq!(buf, raw);
 }
 
-#[cfg(not(target_os = "freebsd"))]
+#[cfg(target_os = "linux")]
 #[test]
 fn test_iptunnel_ipip6_link_info() {
     let raw: Vec<u8> = vec![
@@ -147,7 +147,7 @@ fn test_iptunnel_ipip6_link_info() {
     assert_eq!(buf, raw);
 }
 
-#[cfg(not(target_os = "freebsd"))]
+#[cfg(target_os = "linux")]
 #[test]
 fn test_iptunnel_ip6ip6_link_info() {
     let raw: Vec<u8> = vec![

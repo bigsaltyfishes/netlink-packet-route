@@ -8,7 +8,7 @@ use crate::{
     neighbour::{
         freebsd::FreeBsdNeighbourAttribute, NeighbourAttribute,
         NeighbourCacheInfo, NeighbourFlags, NeighbourHeader, NeighbourMessage,
-        NeighbourMessageBuffer, NeighbourState,
+        NeighbourState,
     },
     route::RouteType,
     AddressFamily,

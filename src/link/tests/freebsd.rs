@@ -6,10 +6,12 @@
 
 use netlink_packet_core::{Emitable, NlaBuffer, Parseable};
 
-use crate::link::{LinkFlags, LinkLayerType, Stats64};
 use crate::{
     buffer_freebsd::FreeBSDBuffer,
-    link::{freebsd::FreeBsdLinkAttribute, link_info::InfoKind},
+    link::{
+        freebsd::FreeBsdLinkAttribute, link_info::InfoKind, LinkFlags,
+        LinkLayerType, Stats64,
+    },
 };
 
 const IFLA_INFO_KIND: u16 = 1;

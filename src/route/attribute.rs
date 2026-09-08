@@ -34,7 +34,8 @@ const RTA_CACHEINFO: u16 = 12;
 // const RTA_SESSION: u16 = 13; // linux kernel said `no longer used`
 #[cfg(target_os = "freebsd")]
 const RTA_WEIGHT: u16 = 13; // FreeBSD specific, path weight
-                            // const RTA_MP_ALGO: u16 = 14; // linux kernel said `no longer used`
+                            // const RTA_MP_ALGO: u16 = 14; // linux kernel said
+                            // `no longer used`
 #[cfg(target_os = "freebsd")]
 const RTA_RTFLAGS: u16 = 14; // FreeBSD specific, path flags (RTF_)
 const RTA_TABLE: u16 = 15;

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-#[cfg(not(target_os = "freebsd"))]
+#[cfg(target_os = "linux")]
 use std::net::Ipv6Addr;
 use std::{net::Ipv4Addr, str::FromStr};
 
@@ -63,7 +63,7 @@ fn test_ipv4_neighbour_show() {
 
 // wireshark capture(netlink message header removed) of nlmon against command:
 //   ip -6 neighbour show
-#[cfg(not(target_os = "freebsd"))]
+#[cfg(target_os = "linux")]
 #[test]
 fn test_ipv6_neighbour_show() {
     let raw = vec![

@@ -86,7 +86,7 @@ fn test_get_loopback_ipv6_addr() {
     assert_eq!(buf, raw);
 }
 
-#[cfg(not(target_os = "freebsd"))]
+#[cfg(target_os = "linux")]
 #[test]
 fn test_get_ipv6_address_ra_protocol() {
     let raw = vec![

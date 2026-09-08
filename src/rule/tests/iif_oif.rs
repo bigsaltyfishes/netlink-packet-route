@@ -4,7 +4,7 @@ use std::{net::Ipv4Addr, str::FromStr};
 
 use netlink_packet_core::{Emitable, Parseable};
 
-#[cfg(not(target_os = "freebsd"))]
+#[cfg(target_os = "linux")]
 use crate::IpProtocol;
 use crate::{
     route::RouteProtocol,
@@ -70,7 +70,7 @@ fn test_ipv4_iif_oif_prohibit() {
 //          protocol bgp table 500
 // wireshark capture(netlink message header removed) of nlmon against command:
 //      ip -6 rule show priority 9000
-#[cfg(not(target_os = "freebsd"))]
+#[cfg(target_os = "linux")]
 #[test]
 fn test_ipv6_iif_oif_ipproto() {
     let raw = vec![

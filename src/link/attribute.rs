@@ -14,7 +14,6 @@ use netlink_packet_core::{
     target_os = "android"
 ))]
 use super::af_spec::VecAfSpecBridge;
-use super::devlink_port::DevlinkPort;
 #[cfg(not(target_os = "freebsd"))]
 use super::dpll_pin::DpllPin;
 #[cfg(any(
@@ -26,6 +25,7 @@ use super::proto_info::VecLinkProtoInfoBridge;
 use super::{
     af_spec::VecAfSpecUnspec,
     buffer_tool::expand_buffer_if_small,
+    devlink_port::DevlinkPort,
     ext_mask::VecLinkExtentMask,
     link_info::VecLinkInfo,
     proto_info::VecLinkProtoInfoInet6,
@@ -213,7 +213,7 @@ pub enum LinkAttribute {
     GroIpv4MaxSize(u32),
     NetnsImmutable(bool),
     DevlinkPort(Vec<DevlinkPort>),
-    // NOTE: on FreeBSD, kind 65 is IFLA_FREEBSD, which collides with
+    // NOTE: on FreeBSD, kind 64 is IFLA_FREEBSD, which collides with
     // Linux's IFLA_DPLL_PIN, so this variant does not exist there.
     #[cfg(not(target_os = "freebsd"))]
     DpllPin(Vec<DpllPin>),
@@ -280,6 +280,8 @@ impl Nla for LinkAttribute {
             | Self::AllMulticast(_)
             | Self::GsoIpv4MaxSize(_)
             | Self::GroIpv4MaxSize(_) => 4,
+            #[cfg(not(target_os = "freebsd"))]
+            Self::TsoMaxSize(_) => 4,
 
             Self::OperState(_) => 1,
             Self::Stats(_) => size_of::<StatsBuffer>(),
@@ -356,6 +358,8 @@ impl Nla for LinkAttribute {
             | Self::AllMulticast(value)
             | Self::GsoIpv4MaxSize(value)
             | Self::GroIpv4MaxSize(value) => emit_u32(buffer, *value).unwrap(),
+            #[cfg(not(target_os = "freebsd"))]
+            Self::TsoMaxSize(value) => emit_u32(buffer, *value).unwrap(),
 
             Self::ExtMask(value) => {
                 emit_u32(buffer, u32::from(&VecLinkExtentMask(value.to_vec())))

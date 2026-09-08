@@ -1,13 +1,17 @@
 // SPDX-License-Identifier: MIT
 
+#[cfg(target_os = "linux")]
 use std::{net::Ipv6Addr, str::FromStr};
 
+#[cfg(target_os = "linux")]
 use netlink_packet_core::{Emitable, Parseable};
 
+use crate::route::RouteNextHopBuffer;
+#[cfg(target_os = "linux")]
 use crate::{
     route::{
         flags::RouteFlags, RouteAttribute, RouteHeader, RouteMessage,
-        RouteNextHopBuffer, RouteProtocol, RouteScope, RouteType,
+        RouteProtocol, RouteScope, RouteType,
     },
     AddressFamily,
 };

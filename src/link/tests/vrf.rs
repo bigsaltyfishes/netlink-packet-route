@@ -16,7 +16,7 @@ use crate::{
     AddressFamily,
 };
 
-#[cfg(not(target_os = "freebsd"))]
+#[cfg(target_os = "linux")]
 #[test]
 fn test_parsing_link_vrf() {
     let raw = vec![

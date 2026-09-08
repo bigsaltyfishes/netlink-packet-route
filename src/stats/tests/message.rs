@@ -4,10 +4,11 @@ use netlink_packet_core::{
     Emitable, NetlinkHeader, NetlinkMessage, NetlinkPayload, Nla, Parseable,
 };
 
+#[cfg(target_os = "linux")]
+use crate::stats::{HwStatsInfo, OffloadXstat};
 use crate::{
     stats::{
-        AfSpecStats, HwStatsInfo, OffloadXstat, StatsAttribute,
-        StatsFilterMask, StatsHeader, StatsMessage,
+        AfSpecStats, StatsAttribute, StatsFilterMask, StatsHeader, StatsMessage,
     },
     AddressFamily, RouteNetlinkMessage,
 };
